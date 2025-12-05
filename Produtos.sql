@@ -17,3 +17,17 @@ values('Arroz', 'alimentício', 13649758583, 17.50, 50),
 	  ('Martelo', 'ferramentas', 1239873675, 25.00, 4),
 	  ('Tênis', 'calçado', 45635715932, 99.90, 50),
 	  ('Feijão', 'alimentício', 3693541279, 19.00, 60);
+	  
+drop table produtos;
+alter table produtos add column fornecedor varchar(40) default 'sem fornecedor' not null;
+
+alter table produtos alter column estoque type bigint;
+
+update produtos set preco = 18.00 where nome = 'Arroz';
+
+update produtos set preco = preco*0.85 where criado_em > '03/12/2025';
+
+delete from produtos where descricao = 'ferramentas';
+
+insert into produtos (nome, descricao, codigo_barras, preco, estoque)
+values('Martelo', 'ferramentas', 1239873675, 25.00, 4);
