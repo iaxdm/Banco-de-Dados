@@ -21,3 +21,29 @@ create table emprestimos(
 	previsao_devolucao date,
 	data_devolucao date
 );
+
+
+insert into alunos (nome, serie, data_nascimento)
+values('João', 'Primeiro ano Ensino médio', '23-11-2010'), ('Maria', 'Oitavo ano', '01-04-2013'), ('Pedro', 'Nono ano', '01-07-2011'),
+('Vanessa', 'Primeiro ano Ensino médio', '18-10-2015'), ('Felipe', 'Quarto ano', '17-07-2015');
+
+insert into livros (titulo, tema_livro)
+values('A Bela e a Fera' , 'infantil'), ('Geografia' , 'Escolar'), ('O monstro', 'Terror'), ('O vale encantado', 'Ficção Científica'),
+('Vilões do mundo', 'Ação');
+
+insert into emprestimos (emprestado_para, livro_emprestado, data_emprestimo)
+values(1, 3, '9-12-2025'), (1, 4, '8-12-2025'), (2, 4, '7-12-2025'), (2, 5, '7-12-2025'), (3, 3, '2-12-2025'), (3, 1, '1-12-2025'),
+(4, 2, '9-12-2025'), (4, 1, '29-11-2025'), (5, 5, '30-11-2025'), (5, 4, '03-12-2025');
+
+select * from alunos;
+select * from livros;
+select * from emprestimos;
+
+select * from emprestimos where emprestado_para = 3;
+select * from livros where tema_livro = 'Terror';
+
+alter table emprestimos drop column data_devolucao;
+alter table emprestimos add column data_devolucao date default '31-12-2025';
+
+
+
