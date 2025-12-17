@@ -45,5 +45,18 @@ select * from livros where tema_livro = 'Terror';
 alter table emprestimos drop column data_devolucao;
 alter table emprestimos add column data_devolucao date default '31-12-2025';
 
+select * from alunos where data_nascimento between '01-01-2010' and '12-12-2012';
+select * from livros where tema_livro = 'Terror' or tema_livro = 'infantil';
+select * from livros where titulo like '%ra%';
+select * from livros where id_livros in (1, 3, 5);
+select * from livros where id_livros not in (1, 3, 5);
 
+alter table livros add column editora varchar(50) not null default '';
+alter table livros alter column editora type varchar(100);
+
+update livros set titulo = 'infantil' where titulo = 'Ficção Científica';
+
+drop table livros;
+drop table emprestimos;
+drop table alunos;
 
