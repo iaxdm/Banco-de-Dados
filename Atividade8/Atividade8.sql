@@ -67,3 +67,12 @@ grant select, update on funcionarios to gerente;
 select * from endereco e;
 select * from setor s; 
 select * from funcionarios f ;
+
+--8--
+
+update funcionarios set matricula = 53265 where matricula = 12345;
+grant create on schema public to gerente;
+create table produtos (
+id_produto serial primary key
+);
+drop table if exists produtos;
