@@ -1,9 +1,12 @@
 
+drop type setores cascade;
+drop table if exists setor;
+drop table if exists compras;
+drop table if exists historico_materia_prima;
+drop table if exists materia_prima;
+
 CREATE TYPE setores AS enum ('Administrativo', 'Produção', 'Limpeza', 'Informática',
-'Aliemntação', 'Logística','Marketing','Segurança');
-
-
-
+'Alimentação', 'Logística','Marketing','Segurança');
 
 
 CREATE TABLE materia_prima (
@@ -28,18 +31,13 @@ CREATE TABLE setor(
 CREATE TABLE compras(
 	id_compras serial PRIMARY KEY,
 	fk_compras int references materia_prima(id_materia),
-	valor NUMERIC(10,2) check(valor > 0),
-	data_compra timestamp NOT NULL,
-	fk_setor INT REFERENCES setor(id_setor)
-);
-
-
-CREATE TABLE gastos(
-	id_gastos serial PRIMARY KEY,
-	fk_setor int REFERENCES setor(id_setor),
 	descricao text,
-	fk_compra INT REFERENCES compras(id_compras)
+	data_compra timestamp NOT NULL,
+	fk_setor INT REFERENCES setor(id_setor),
+	quantidade int
 );
+
+
 
 INSERT INTO materia_prima (nome, estoque, validade, preco, codigo_barras) VALUES
 ('Aço', 500, '2090-12-31', 150.50, '1234567890123'),
@@ -59,47 +57,89 @@ INSERT INTO materia_prima (nome, estoque, validade, preco, codigo_barras) VALUES
 ('Computadores', 15, '2027-12-12', 1800.80, '1234567890137'),
 ('Sabão', 20, '2027-04-12', 18.80, '1234567890137'),
 ('Projetor', 5, '2027-04-12', 250.90, '1234567890137'),
-('Quadros', 8, '2027-04-12', 100.90, '1234567890137');
+('Quadros', 8, '2027-04-12', 100.90, '1234567890137')
+;
 
-insert into setor (nome, orcamento,setor_ativo)
-values ('Administrativo', 20000.00, true), ('Produção', 100000.00, true),
-('Limpeza', 7000.00, true), ('Informática', 30000.00, true), ('Alimentação', 15000.00, true),
-('Logística', 17000.00, true), ('Marketing', 25000.00, true), ('Segurança', 7000, true)
+INSERT INTO setor (nome, orcamento, setor_ativo)
+VALUES 
+('Administrativo', 20000.00, true),
+('Produção', 100000.00, true),
+('Limpeza', 7000.00, true),
+('Informática', 30000.00, true),
+('Alimentação', 15000.00, true),
+('Logística', 17000.00, true),
+('Marketing', 25000.00, true),
+('Segurança', 7000.00, true);
 
-INSERT INTO compras (fk_compras, valor, data_compra, fk_setor) VALUES
-(1, 15050.00, '2026-01-10 10:00:00', 2), 
-(2, 150.00, '2026-01-12 09:30:00', 1),    
-(3, 7800.00, '2026-01-15 11:00:00', 6),   
-(4, 13200.00, '2026-01-18 14:20:00', 2),  
-(5, 50000.00, '2026-01-20 08:45:00', 6),  
-(6, 7700.00, '2026-01-22 10:15:00', 2),   
-(7, 10500.00, '2026-01-25 13:00:00', 2),  
-(8, 2700.00, '2026-01-28 15:30:00', 4),   
-(9, 3000.00, '2026-02-01 09:10:00', 1),   
-(10, 2424.00, '2026-02-03 12:00:00', 1),  
-(11, 3330.00, '2026-02-05 08:30:00', 5),  
-(12, 216.30, '2026-02-07 10:50:00', 3),   
-(13, 2400.00, '2026-02-10 14:00:00', 4),  
-(14, 35350.00, '2026-02-12 16:20:00', 7), 
-(15, 27012.00, '2026-02-15 11:40:00', 4);
+INSERT INTO compras (fk_compras, descricao, data_compra, fk_setor, quantidade) VALUES
+(1,'Compra de Aço' , '2026-01-10 10:00:00', 2, 200), 
+(2,'Compra de canetas','2026-01-12 09:30:00', 1, 10),    
+(3,'Compra de vidro' , '2026-01-15 11:00:00', 2, 50),   
+(4, 'Compra de alumínio' , '2026-01-18 14:20:00', 2, 40),  
+(5, 'Compra de veículos' , '2026-01-20 08:45:00', 6, 6),  
+(6, 'Compra de cimento' , '2026-01-22 10:15:00', 2, 200),   
+(7, 'Compra de madeira' , '2026-01-25 13:00:00', 2, 500),  
+(8, 'Compra de tinta' , '2026-01-28 15:30:00', 2, 40),   
+(9,  'Compra de parafuso' , '2026-02-01 09:10:00', 2, 1000),   
+(10, 'Compra de papel' , '2026-02-03 12:00:00', 1, 20),  
+(11, 'Compra de uniformes' ,  '2026-02-05 08:30:00', 8, 100),  
+(12,  'Compra de vassoura' , '2026-02-07 10:50:00', 3, 8),   
+(13, 'Compra de Comunicadores' ,  '2026-02-10 14:00:00', 8, 7),  
+(14, 'Compra de cerâmica' ,  '2026-02-12 16:20:00', 2, 70), 
+(15, 'Compra de computadores' ,  '2026-02-15 11:40:00', 4, 10),
+(16 , 'Compra de sabão', '2026-02-18 12:50:00', 3, 20),
+(17, 'Compra de projetores' , '2026-01-10 14:20:00' , 7, 4),
+(18, 'Compra de quadros', '2026-01-05 15:30:00', 7, 6)
+;
 
-INSERT INTO gastos (fk_setor, descricao, fk_compra) VALUES
-(1, 'Pagamento de contas de água e luz', NULL),            
-(1, 'Compra de canetas', 2),                               
-(2, 'Manutenção de máquinas', NULL),                       
-(2, 'Compra de Aço', 1),                                   
-(2, 'Compra de Alumínio', 4),                              
-(3, 'Serviço de limpeza predial', NULL),                   
-(3, 'Compra de Vassoura', 12),                             
-(4, 'Atualização de software', NULL),                      
-(4, 'Compra de Computadores', 15),                          
-(4, 'Compra de Comunicadores', 13),                         
-(5, 'Serviço de fornecimento de alimentação', NULL),       
-(5, 'Compra de Uniformes', 11),                             
-(6, 'Transporte de materiais', NULL),                      
-(6, 'Compra de Vidro', 3),                                 
-(6, 'Compra de Veículos', 5),                              
-(7, 'Campanha de Marketing digital', NULL);               
+create table historico_materia_prima(
+	id_historico serial primary key,
+	estoque_antigo int,
+	novo_estoque int,
+	fk_historico int references materia_prima(id_materia)
+);
+
+CREATE OR REPLACE TRIGGER trg_estoque
+AFTER UPDATE ON materia_prima
+FOR EACH ROW
+EXECUTE FUNCTION historico_estoque();
+
+
+CREATE OR REPLACE FUNCTION historico_estoque()
+RETURNS TRIGGER AS $$
+BEGIN
+	INSERT INTO historico_materia_prima
+	(estoque_antigo, novo_estoque, fk_historico)
+	VALUES
+	(OLD.estoque, NEW.estoque, NEW.id_materia);
+
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+update materia_prima set estoque = 550 where nome = 'Alumínio';
+
+
+
+create or replace trigger trg_abastecimento
+after insert on compras
+for each row
+execute function controle_estoque();
+
+
+create or replace function controle_estoque ()
+RETURNS TRIGGER AS $$
+BEGIN
+	UPDATE materia_prima set estoque = estoque + NEW.quantidade
+	WHERE id_materia = NEW.fk_compras;
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+INSERT INTO compras (fk_compras, descricao, data_compra, fk_setor, quantidade)
+VALUES (7, 'Compra de madeira', '2026-03-04 12:00:00', 2, 20);
+
 
 
 
